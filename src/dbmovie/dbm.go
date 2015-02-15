@@ -1,12 +1,11 @@
 package main
 
 import (
+	"DoubanCrawler/src/config"
+	"DoubanCrawler/src/database"
 	. "DoubanCrawler/src/models"
 	"DoubanCrawler/src/util/errutil"
-	"DoubanCrawler/src/util/timeutil"
 	"github.com/PuerkitoBio/goquery"
-	_ "github.com/go-sql-driver/mysql"
-	"github.com/jinzhu/gorm"
 	"strconv"
 	"strings"
 	"time"
@@ -17,18 +16,13 @@ func ExampleScrape() {
 	doc, err := goquery.NewDocument("http://movie.douban.com/subject/25884822/")
 	errutil.Checkerr(err)
 
-	//connect database
-	db, err := gorm.Open("mysql", "root:32167@/dbMovie?charset=utf8&parseTime=True")
+	//get dbhandler
+	db, err := database.DatabaseConn(config.DB_TYPE, config.DB_USERNAME, config.DB_PASSWORD, config.DB_DBNAME)
 	errutil.Checkerr(err)
-	db.DB()
+	defer database.DatabaseClose(&db)
+
+	//get data
 	db.AutoMigrate(&SimpleMovieInfo{})
-
-	//defer close db
-	defer func() {
-		err := db.Close()
-		errutil.Checkerr(err)
-	}()
-
 	doc.Find("#recommendations .recommendations-bd dl").Each(func(i int, s *goquery.Selection) {
 
 		//for movieId
@@ -44,14 +38,12 @@ func ExampleScrape() {
 			errutil.Checkerr(err)
 		}
 
-		//for name
+		//for moviename
 		title := s.Find("dd").Text()
 		title = strings.TrimSpace(title)
 
-		//		log.Printf("Remm %d: %s - %s\n", i, link, title)
-
 		//for updatedAt
-		updatedAt := time.Now().Format(timeutil.STANDARDTIME)
+		updatedAt := time.Now()
 
 		//construct data && update db
 		movie := SimpleMovieInfo{MovieId: movieIdN, MovieName: title, UpdatedAt: updatedAt}

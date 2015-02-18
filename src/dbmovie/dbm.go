@@ -17,12 +17,14 @@ func ExampleScrape() {
 	errutil.Checkerr(err)
 
 	//get dbhandler
-	db, err := database.DatabaseConn(config.DB_TYPE, config.DB_USERNAME, config.DB_PASSWORD, config.DB_DBNAME)
+	db, err := database.DatabaseConn(config.DB_TYPE,
+		config.DB_USERNAME, config.DB_PASSWORD, config.DB_DBNAME)
 	errutil.Checkerr(err)
 	defer database.DatabaseClose(&db)
 
 	//get data
 	db.AutoMigrate(&SimpleMovieInfo{})
+
 	doc.Find("#recommendations .recommendations-bd dl").Each(func(i int, s *goquery.Selection) {
 
 		//for movieId
@@ -43,11 +45,11 @@ func ExampleScrape() {
 		title = strings.TrimSpace(title)
 
 		//for updatedAt
-		updatedAt := time.Now()
+		updatedAt := time.Now().Local()
 
 		//construct data && update db
-		movie := SimpleMovieInfo{MovieId: movieIdN, MovieName: title, UpdatedAt: updatedAt}
-
+		movie := SimpleMovieInfo{MovieId: movieIdN,
+			MovieName: title, UpdatedAt: updatedAt}
 		if notexist := db.First(&SimpleMovieInfo{MovieId: movieIdN}).RecordNotFound(); notexist {
 			db.Create(&movie)
 		}

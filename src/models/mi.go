@@ -7,7 +7,7 @@ import (
 //store movieInfo
 type MovieInfo struct {
 	MovieId    uint64    `sql:"type:bigint(2)" gorm:"primary_key;column:movieId"`
-	MovieName  string    `sql:"type:varchar(35);not null" gorm:"column:movieName"`
+	MovieName  string    `sql:"type:varchar(120);not null" gorm:"column:movieName"`
 	TagName    string    `sql:"type:varchar(10);not null" gorm:"column:tagName"`
 	MovieUrl   string    `sql:"type:varchar(70);not null" gorm:"column:movieUrl"`
 	ReleasedAt string    `sql:"type:varchar(10)" gorm:"column:releasedAt"`

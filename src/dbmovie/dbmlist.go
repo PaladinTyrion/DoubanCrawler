@@ -5,7 +5,6 @@ import (
 	"DoubanCrawler/src/database"
 	. "DoubanCrawler/src/models"
 	"DoubanCrawler/src/util/errutil"
-	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"strconv"
 	"strings"

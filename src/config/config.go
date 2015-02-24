@@ -6,4 +6,5 @@ const (
 	DB_USERNAME      = "root"
 	DB_PASSWORD      = "32167"
 	DB_DBNAME        = "dbMovie"
+	PAGESIZE         = 20
 )

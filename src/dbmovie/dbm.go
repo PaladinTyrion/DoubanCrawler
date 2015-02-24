@@ -66,15 +66,8 @@ func CrawlerMInfoFromUrl(url, tagName string) {
 		errutil.Checkerr(err)
 
 		//for updatedAt
-		updatedAt := time.Now().Local()
+		updatedAt := time.Now()
 
-		//construct data && update db
-		//		//SimpleMovieInfo
-		//		smi := SimpleMovieInfo{MovieId: movieId,
-		//			MovieName: movieName, UpdatedAt: updatedAt}
-		//		if notexist := db.First(&SimpleMovieInfo{MovieId: movieId}).RecordNotFound(); notexist {
-		//			db.Create(&smi)
-		//		}
 		//MovieInfo
 		mi := MovieInfo{MovieId: movieId, MovieName: movieName, TagName: tagName,
 			MovieUrl: movieUrl, ReleasedAt: releasedAt, UpdatedAt: updatedAt}
@@ -83,7 +76,7 @@ func CrawlerMInfoFromUrl(url, tagName string) {
 		}
 		//MovieRatingInfo
 		mri := MovieRatingInfo{MovieId: movieId, MovieRating: movieRating,
-			UsersNumRating: usersNumRating, UpdatedAt: updatedAt}
+			UsersNumRating: usersNumRating, TagName: tagName, UpdatedAt: updatedAt}
 		if notexist := db.First(&MovieRatingInfo{MovieId: movieId}).RecordNotFound(); notexist {
 			db.Create(&mri)
 		}

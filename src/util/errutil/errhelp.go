@@ -1,6 +1,7 @@
 package errutil
 
 import (
+	//	log "github.com/cihub/seelog"
 	"log"
 )
 

@@ -5,6 +5,7 @@ import (
 	"DoubanCrawler/src/database"
 	. "DoubanCrawler/src/models"
 	"DoubanCrawler/src/util/errutil"
+	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"strconv"
 	"strings"
@@ -64,7 +65,7 @@ func CrawlerMList() {
 				errutil.Checkerr(err)
 
 				//TagUpdatedAt
-				tagUpdatedAt := time.Now().Local()
+				tagUpdatedAt := time.Now()
 
 				//construct data && update db
 				tag4Seach := MovieTagList{TagName: tagName, TagUrl: tagUrl,
